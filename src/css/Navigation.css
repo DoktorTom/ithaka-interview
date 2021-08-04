@@ -1,0 +1,9 @@
+.Navigation {
+    text-align: "center";
+    margin: "auto";
+}
+
+.Navigation-button {
+    float: center;
+    clear: left;
+}

@@ -1,0 +1,28 @@
+.Details-title {
+    text-align: center;
+}
+
+.Details-table {
+    border-collapse: collapse;
+}
+
+
+.Details-table tr {
+    text-align: left;
+    width: 0 auto;
+}
+  
+.Details-table th {
+    text-align: left;
+    width: auto;
+}
+
+.Details-table td {
+    text-align: left;
+    width: auto;
+}
+
+.Details-data {
+    float: left;
+    clear: left
+}

@@ -1,0 +1,14 @@
+.App {
+  width: 50%;
+  text-align: center;
+  margin: auto;
+}
+
+.App-header {
+  border-bottom: 1px solid;
+  padding-bottom: 5px;
+}
+
+.App-search {
+  text-align: left;
+}

@@ -1,0 +1,21 @@
+.Image {
+    width: 150px;
+    margin: 0px;
+    padding: 5px;
+    /*this is a flex child: don't grow, don't shrink*/
+    flex-basis: 0;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.Image-image {
+    display: block;
+    /*Constant square size for image*/
+    height: 150px; /*using medium image size this looks so much better*/
+    width: 150px;
+    border: 1;
+}
+
+.Image-title {
+    text-align: center;
+}

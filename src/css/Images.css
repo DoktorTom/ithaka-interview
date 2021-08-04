@@ -1,0 +1,15 @@
+.Images {
+    padding-top: 5px;
+}
+
+.Images-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin: auto;
+    width: 640px;
+}
+
+.Filter-form {
+    text-align: left;
+}
