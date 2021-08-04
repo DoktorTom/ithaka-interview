@@ -6,6 +6,7 @@ import "../css/Navigation.css"
 // mock for pagination API -> just return the same data again...
 function getDataForPage(page) {
     console.log("Getting data for page " + page)
+    testData.photos.page = page;
     return testData
   }
 
@@ -21,6 +22,7 @@ class Navigation extends React.Component {
     }
 
     toFirstPage() {
+        console.log("GO!!!")
         let data = getDataForPage(1);
         this.props.stateHandler(data)
       }
@@ -42,11 +44,11 @@ class Navigation extends React.Component {
 
     render() {
         return <div className="Navigation">
-        <button className="Navigation-button" onClick={this.props.toFirstPage}>&lt;&lt;</button>
-        <button className="Navigation-button" onClick={this.props.toPrevPage}>&lt;</button>
+        <button className="Navigation-button" onClick={this.toFirstPage} disabled={!(this.props.page > 1)}>&lt;&lt;</button>
+        <button className="Navigation-button" onClick={this.toPrevPage} disabled={!(this.props.page > 1)}>&lt;</button>
         <label className="Navigation-button" >page {this.props.page} of {this.props.pages}</label>
-        <button className="Navigation-button" onClick={this.toNextPage}>&gt;</button>
-        <button className="Navigation-button" onClick={this.toLastPage}>&gt;&gt;</button>
+        <button className="Navigation-button" onClick={this.toNextPage} disabled={!(this.props.page < this.props.pages)}>&gt;</button>
+        <button className="Navigation-button" onClick={this.toLastPage} disabled={!(this.props.page < this.props.pages)}>&gt;&gt;</button>
         </div>
     }
 
