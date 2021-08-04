@@ -8,6 +8,17 @@ function getApiData() {
   return testData;
 }
 
+// TODO: create a dummy search results set...
+function getSearchData(terms) {
+  let toReturn = {};
+  for (const term of terms) {
+    for (const photo of testData.photos) {
+      // do "searching" here -> basically the same as filtering...
+    }    
+  }
+  return testData
+}
+
 class App extends React.Component {
 
   constructor(props) {
@@ -54,6 +65,11 @@ class App extends React.Component {
 
   searchSubmit(event) {
     console.log(this.state.searchTerm.split(" "))
+    let data = getApiData();
+    this.setState({
+      data: data,
+      searchTerm: ""
+    })
     event.preventDefault();
   }
 
