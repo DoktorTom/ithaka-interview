@@ -63,7 +63,9 @@ const testData = {
           "url_z_cdn": "https://c1.staticflickr.com/5/4104/5002248685_88255b5790_z.jpg",
           "height_z": "640",
           "width_z": "639",
-          "pathalias": "hboston"
+          "pathalias": "hboston",
+          "comments": [{text:"This is a pre-existing comment",
+                        user: "Tom"}]
         },
         {
           "id": "14264736752",
