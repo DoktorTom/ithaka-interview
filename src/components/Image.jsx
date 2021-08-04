@@ -66,10 +66,6 @@ class Image extends React.Component {
                     <ReactModal isOpen={this.state.showModal} contentLabel="Image Modal" style={this.modalStyle}>
                         <button onClick={this.closeModal} style={{float: "right"}}>Close</button>
                         <ImageDetails data={this.props.data}/>
-                        <span className="Modal-buttons" style={{float: "right", clear: "left"}}>
-                            <button onClick={this.closeModal}>cancel</button>
-                            <button disabled={true}>save</button>
-                        </span>
                     </ReactModal>
                     <label className="Image-title">{title}</label>
                 </div>

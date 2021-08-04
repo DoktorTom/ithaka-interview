@@ -87,6 +87,10 @@ class ImageDetails extends React.Component {
                 {this.props.data.comments.map((elt) => {return <span style={{float: "left", clear:"left"}}>{elt.user}: {elt.text}</span>})}
             </div>
         </span>
+        <span className="Modal-buttons" style={{float: "right", clear: "left"}}>
+            <button onClick={this.closeModal}>cancel</button>
+            <button disabled={true}>save</button>
+        </span>
         </div>
     }
 
