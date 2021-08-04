@@ -18,14 +18,18 @@ class Images extends React.Component {
             return true;
         }
 
-        if (image.title.includes(query)) return true;
-        if (image.description._content.includes(query)) return true;
-        if (image.ownername.includes(query)) return true;
+        let normalizedQuery = query.toLowerCase();
 
+        if (image.title.toLowerCase().includes(normalizedQuery)) return true;
+        if (image.description._content.toLowerCase().includes(normalizedQuery)) return true;
+        if (image.ownername.toLowerCase().includes(normalizedQuery)) return true;
+
+        return false;
 
     }
 
     render() {
+
         return <div className="Images">
             <div className="Filter">
                 <form className="Filter-form" onSubmit={(ev) => {
