@@ -1,7 +1,11 @@
 import React from 'react';
 import Image from './Image';
 import '../css/Images.css';
+import testData from '../testData'
 
+function getImageData(imgId) {
+    return testData.photos.photo[imgId];
+}
 
 class Images extends React.Component {
 
@@ -9,8 +13,23 @@ class Images extends React.Component {
         super(props);
 
         this.state = {
-            filter: ""
+            filter: "",
+            images: []
         };
+    }
+
+    componentDidMount() {
+
+        const imageData = [];
+
+        for (const idx of this.props.imgIds) {
+            const temp = getImageData(idx);
+            imageData.push(temp);
+        }
+
+        this.setState({images: imageData});
+
+
     }
 
     filter(image, query) {
@@ -43,7 +62,9 @@ class Images extends React.Component {
                 </form>
             </div>
             <div className="Images-container">
-                    {this.props.images.map(image => this.filter(image, this.state.filter) ? <Image data={image}/> : <></>)}
+                    {this.state.images.map(image => {
+                        return this.filter(image, this.state.filter) ? <Image key={image.id} data={image}/> : <></>;
+                    })}
             </div>
         </div>
     }

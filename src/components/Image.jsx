@@ -42,8 +42,8 @@ class Image extends React.Component {
     modalStyle = {
         content: {
             margin: "auto",
-            height: "75%",
-            width: "40%"
+            height: "750px",
+            width: "500px",
         }
     }
 
@@ -65,7 +65,7 @@ class Image extends React.Component {
                     }/>
                     <ReactModal isOpen={this.state.showModal} contentLabel="Image Modal" style={this.modalStyle}>
                         <button onClick={this.closeModal} style={{float: "right"}}>Close</button>
-                        <ImageDetails data={this.props.data}/>
+                        <ImageDetails data={this.props.data} close={this.closeModal}/>
                     </ReactModal>
                     <label className="Image-title">{title}</label>
                 </div>

@@ -35,29 +35,34 @@ class ImageDetails extends React.Component {
             faves = faves + 1;
         }
 
-        let numComments = parseInt(this.props.data.count_comments);
-        numComments = numComments + this.props.data.comments.length
+        let countComments = parseInt(this.props.data.count_comments);
 
         return <div className="Details"> <h2 className="Details-title">{this.props.data.title}</h2>
         <table className="Details-table">
+            <tbody>
             <tr>
                 <th>Title:</th>
                 <td>
                     <input type="text" value={this.props.data.title} size={this.props.data.title.length} disabled="true"/>
                 </td>
             </tr>
+            </tbody>
+            <tbody>
             <tr>
                 <th style={this.descStyle}>Description:</th>
                 <td>
                     <textarea style={this.descStyle} value={this.props.data.description._content} readOnly/>
                 </td>
             </tr>
+            </tbody>
+            <tbody>
             <tr>
                 <th>Public Domain:</th>
                 <td>
                     <input type="checkbox" checked={this.props.data.ispublic} disabled={true}/>
                 </td>
             </tr>
+            </tbody>
         </table>
         <span className="Details-data">ID: {this.props.data.id}</span>
         <span className="Details-data">Owner: {this.props.data.ownername}</span>
@@ -72,11 +77,12 @@ class ImageDetails extends React.Component {
             </button>
         </span>
         <span className="Details-data">
-            Comments: {numComments}
+            Comments: {countComments}
             <div>
                 <form className="Details-data" onSubmit={(ev) => {
                         this.props.data.comments.push({text: this.state.commentToAdd,
                         user: "You"});
+                        this.props.data.count_comments = countComments + 1;
                         this.setState({commentToAdd: ""})
                         ev.preventDefault();
                     }}>
@@ -88,7 +94,7 @@ class ImageDetails extends React.Component {
             </div>
         </span>
         <span className="Modal-buttons" style={{float: "right", clear: "left"}}>
-            <button onClick={this.closeModal}>cancel</button>
+            <button onClick={this.props.close}>cancel</button>
             <button disabled={true}>save</button>
         </span>
         </div>

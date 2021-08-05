@@ -4,11 +4,17 @@ import "../css/Navigation.css"
 
 
 // mock for pagination API -> just return the same data again...
-function getDataForPage(page) {
-    console.log("Getting data for page " + page)
-    testData.photos.page = page;
-    return testData
+function getDataForPage(pageNum) {
+  return {
+    pages: testData.photos.pages,
+    page: pageNum,
+    perPage: testData.photos.perPage,
+    totalImgs: testData.photos.total,
+    ids: Array.from(Array(testData.photos.photo.length).keys()),
+    max_allowed_results: 4000,
+    max_allowed_pages: 40
   }
+};
 
 class Navigation extends React.Component {
 
@@ -21,11 +27,13 @@ class Navigation extends React.Component {
         this.toLastPage = this.toLastPage.bind(this);
     }
 
+    
+
     toFirstPage() {
-        console.log("GO!!!")
-        let data = getDataForPage(1);
-        this.props.stateHandler(data)
-      }
+
+      let data = getDataForPage(1)
+      this.props.stateHandler(data)
+    }
     
       toPrevPage() {
         let data = getDataForPage(this.props.page - 1);

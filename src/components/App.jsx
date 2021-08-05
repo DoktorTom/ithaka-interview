@@ -4,20 +4,36 @@ import testData from '../testData'
 import Navigation from './Navigation';
 import '../css/App.css';
 
-function getApiData() {
-  return testData;
-}
+// our "api"
+// return pages+image ids on page that match a given query
+function executeQuery(query) {
 
-// TODO: create a dummy search results set...
-function getSearchData(terms) {
-  let toReturn = {};
-  for (const term of terms) {
-    for (const photo of testData.photos) {
-      // do "searching" here -> basically the same as filtering...
-    }    
+  if (query[0] === "") {
+    return getDataForPage(1); // reset back to first page
   }
-  return testData
-}
+  return { // return nothing because there is no search
+    pages: 0,
+    page: 0,
+    perPage: 0,
+    totalImgs: 0,
+    ids: [],
+    max_allowed_results: 4000,
+    max_allowed_pages: 40
+  };
+};
+
+// returns numpages, current page, and ids for that page
+function getDataForPage(pageNum) {
+  return {
+    pages: testData.photos.pages,
+    page: testData.photos.page,
+    perPage: testData.photos.perPage,
+    totalImgs: testData.photos.total,
+    ids: Array.from(Array(testData.photos.photo.length).keys()),
+    max_allowed_results: 4000,
+    max_allowed_pages: 40
+  }
+};
 
 class App extends React.Component {
 
@@ -26,48 +42,95 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      data: "",
+      totalImgs: null,
+      imgIds: null,
+      currPage: 1,
+      numPages: null,
+      perPage: null,
       isLoaded: false,
       error: "",
-      searchTerm: null
+      searchTerm: ""
     }
 
     this.stateHandler = this.stateHandler.bind(this);
+    this.searchSubmit = this.searchSubmit.bind(this);
+    this.searchTermChange = this.searchTermChange.bind(this);
 
   }
 
   stateHandler(data) {
-    this.setState({data: data})
+
+    if (data.pages > data.max_allowed_pages) {
+      data.pages = data.max_allowed_pages;
+    }
+
+    if (data.totalImgs > data.max_allowed_results) {
+      data.totalImgs = data.max_allowed_results;
+    }
+
+    this.setState(
+      {
+        totalImgs: data.totalImgs,
+        imgIds: data.ids,
+        currPage: data.page,
+        numPages: data.pages,
+        perPage: data.perPage
+      }
+    );
   }
 
+  // only fires once on load
   componentDidMount() {
-    let data = getApiData()
+    let data = getDataForPage(this.state.currPage)
+
+    if (data.pages > data.max_allowed_pages) {
+      data.pages = data.max_allowed_pages;
+    }
+
+    if (data.totalImgs > data.max_allowed_results) {
+      data.totalImgs = data.max_allowed_results;
+    }
+
     this.setState(
         {
-          data: data,
+          totalImgs: data.totalImgs,
+          imgIds: data.ids,
+          currPage: data.page,
+          numPages: data.pages,
+          perPage: data.perPage,
           isLoaded: true,
           error: ""
         }
       );
-
-    this.searchSubmit = this.searchSubmit.bind(this);
-    this.searchTermChange = this.searchTermChange.bind(this);
   }
 
-  firstImageOnPage(page, perpage) {
-    return (page - 1) * perpage + 1;
+  firstImageOnPage(page, perPage) {
+    return (page - 1) * perPage + 1;
   }
 
-  lastImageOnPage(page, perpage) {
+  lastImageOnPage(page, perPage) {
 
-    return page * perpage;
+    return page * perPage;
   }
 
   searchSubmit(event) {
-    console.log(this.state.searchTerm.split(" "))
-    let data = getApiData();
+    let searchTerms = this.state.searchTerm.split(" ");
+    let data = executeQuery(searchTerms);
+
+    if (data.pages > data.max_allowed_pages) {
+      data.pages = data.max_allowed_pages;
+    }
+
+    if (data.totalImgs > data.max_allowed_results) {
+      data.totalImgs = data.max_allowed_results;
+    }
+
     this.setState({
-      data: data,
+      totalImgs: data.totalImgs,
+      imgIds: data.ids,
+      currPage: data.page,
+      numPages: data.pages,
+      perPage: data.perPage,
       searchTerm: ""
     })
     event.preventDefault();
@@ -80,7 +143,7 @@ class App extends React.Component {
 
   render() {
 
-    const {data, isLoaded, error} = this.state;
+    const {imgIds, currPage, numPages, totalImgs, error, isLoaded} = this.state;
 
     if (error) {
       return <div>Error...</div>
@@ -96,12 +159,13 @@ class App extends React.Component {
             <form onSubmit={this.searchSubmit}>
               <label>Search: </label>
               <input type="text" value={this.state.searchTerm} onChange={this.searchTermChange} placeholder="keywords"/>
-                {data.photos.perpage} of {data.photos.total} images
+                {imgIds.length} of {totalImgs} images
             </form>
           </div>
         </header>
-        <Images images={data.photos.photo}/>
-        <Navigation page={data.photos.page} pages={data.photos.pages}  stateHandler={this.stateHandler}/>
+        {imgIds.length > 0 ? <Images imgIds={imgIds}/> : <></>}
+        
+        <Navigation page={currPage} pages={numPages}  stateHandler={this.stateHandler}/>
       </div>
     );
   };
