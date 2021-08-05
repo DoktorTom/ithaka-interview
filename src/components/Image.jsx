@@ -58,7 +58,7 @@ class Image extends React.Component {
             title = title + "..."
         }
 
-        return  <div className="Image">
+        return  <div className="Image" >
                     <img className="Image-image" src={this.props.data.url_m_cdn} alt="" onClick={this.openModal}
                     onError={
                         (ev) => {ev.target.src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/High-contrast-image-missing.svg/215px-High-contrast-image-missing.svg.png"}

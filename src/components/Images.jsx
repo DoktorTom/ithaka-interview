@@ -4,7 +4,17 @@ import '../css/Images.css';
 import testData from '../testData'
 
 function getImageData(imgId) {
-    return testData.photos.photo[imgId];
+    return testData[0].photos.photo[imgId];
+}
+
+// apparently js doesn't have built in arr comp
+function compArrays(a, b) {
+    var i = a.length > b.length ? a.length : b.length;
+    while (i--) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true
+
 }
 
 class Images extends React.Component {
@@ -18,6 +28,25 @@ class Images extends React.Component {
         };
     }
 
+    componentDidUpdate(prevProps, prevState) {
+
+        if (!compArrays(prevProps.imgIds, this.props.imgIds)) {
+            const imageData = [];
+
+            for (const idx of this.props.imgIds) {
+                const temp = getImageData(idx);
+                imageData.push(temp);
+            }
+
+            this.setState({
+                images: imageData,
+                filter: ""
+            });
+        }
+
+        
+    }
+
     componentDidMount() {
 
         const imageData = [];
@@ -27,7 +56,10 @@ class Images extends React.Component {
             imageData.push(temp);
         }
 
-        this.setState({images: imageData});
+        this.setState({
+            images: imageData,
+            filter: ""
+        });
 
 
     }

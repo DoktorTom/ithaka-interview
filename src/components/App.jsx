@@ -8,15 +8,38 @@ import '../css/App.css';
 // return pages+image ids on page that match a given query
 function executeQuery(query) {
 
-  if (query[0] === "") {
+  if (query[0] === "") { // no query
     return getDataForPage(1); // reset back to first page
   }
+
+  const toReturn = []
+
+  // basically same logic as filter, but with each word of query
+  for (var i = 0; i < testData[0].photos.photo.length; i += 1) {
+    const photo = testData[0].photos.photo[i];
+    for (const word of query) {
+      if (photo.title.toLowerCase().includes(word)){
+        toReturn.push(i); //because we're running on ids elsewhere in the app
+        break; // already added the image no reason to check other query terms
+      };
+        if (photo.description._content.toLowerCase().includes(word)){
+          toReturn.push(i);
+          break;
+      };
+        if (photo.ownername.toLowerCase().includes(word)) {
+          toReturn.push(i);
+          break;
+      };
+
+    }
+  }
+
   return { // return nothing because there is no search
-    pages: 0,
-    page: 0,
-    perPage: 0,
-    totalImgs: 0,
-    ids: [],
+    pages: 1,
+    page: 1,
+    perPage: 100,
+    totalImgs: toReturn.length,
+    ids: toReturn,
     max_allowed_results: 4000,
     max_allowed_pages: 40
   };
@@ -24,12 +47,15 @@ function executeQuery(query) {
 
 // returns numpages, current page, and ids for that page
 function getDataForPage(pageNum) {
+
+  if (pageNum > 2) pageNum = 2; // because we only have two pages
+
   return {
-    pages: testData.photos.pages,
-    page: testData.photos.page,
-    perPage: testData.photos.perPage,
-    totalImgs: testData.photos.total,
-    ids: Array.from(Array(testData.photos.photo.length).keys()),
+    pages: testData[pageNum-1].photos.pages,
+    page: testData[pageNum-1].photos.page,
+    perPage: testData[pageNum-1].photos.perPage,
+    totalImgs: testData[pageNum-1].photos.total,
+    ids: Array.from(Array(testData[pageNum-1].photos.photo.length).keys()),
     max_allowed_results: 4000,
     max_allowed_pages: 40
   }
@@ -59,7 +85,6 @@ class App extends React.Component {
   }
 
   stateHandler(data) {
-
     if (data.pages > data.max_allowed_pages) {
       data.pages = data.max_allowed_pages;
     }
@@ -130,8 +155,7 @@ class App extends React.Component {
       imgIds: data.ids,
       currPage: data.page,
       numPages: data.pages,
-      perPage: data.perPage,
-      searchTerm: ""
+      perPage: data.perPage
     })
     event.preventDefault();
   }

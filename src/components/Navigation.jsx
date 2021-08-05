@@ -5,12 +5,17 @@ import "../css/Navigation.css"
 
 // mock for pagination API -> just return the same data again...
 function getDataForPage(pageNum) {
+
+  const displayPage = pageNum;
+
+  if (pageNum > 2) pageNum = 2;
+
   return {
-    pages: testData.photos.pages,
-    page: pageNum,
-    perPage: testData.photos.perPage,
-    totalImgs: testData.photos.total,
-    ids: Array.from(Array(testData.photos.photo.length).keys()),
+    pages: testData[pageNum-1].photos.pages,
+    page: displayPage,
+    perPage: testData[pageNum-1].photos.perPage,
+    totalImgs: testData[pageNum-1].photos.total,
+    ids: Array.from(Array(testData[pageNum-1].photos.photo.length).keys()),
     max_allowed_results: 4000,
     max_allowed_pages: 40
   }
